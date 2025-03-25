@@ -45,13 +45,22 @@ nav ul li a {
 }
 
 .profile-image {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
 }
-
+.hero .profile-image {
+    display: block; /* To allow margin: 0 auto; */
+    max-width: 80%; /* Adjust as needed */
+    max-height: 80vh; /* Adjust as needed */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Or use 'cover' if you want it to fill the space and potentially crop */
+    border-radius: 5px; /* Adjust if you want a circular image */
+    margin: 0 auto 10px; /* Center horizontally and add some bottom margin */
+}
 .name-dates {
     font-size: 1.2em;
     color: #555;
