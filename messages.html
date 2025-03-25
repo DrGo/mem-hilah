@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave a Message - Remembering Hilah Lende Simmons</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Leave a Message for Hilah</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="funeral.html">Funeral Stream</a></li>
+                <li><a href="photos.html">Photo Gallery</a></li>
+                <li><a href="about.html">About Hilah</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <section class="message-form">
+            <h2>Share Your Thoughts</h2>
+            <p>Your messages will be collected and a selection may be displayed on this page.</p>
+            <form id="messageForm">
+                <label for="name">Your Name:</label><br>
+                <input type="text" id="name" name="name" required><br>
+                <label for="email">Your Email (Optional):</label><br>
+                <input type="email" id="email" name="email"><br>
+                <label for="phone">Your Phone Number (Optional):</label><br>
+                <input type="tel" id="phone" name="phone"><br>
+                <label for="message">Your Message:</label><br>
+                <textarea id="message" name="message" rows="5" required></textarea><br><br>
+                <button type="submit">Submit Message</button>
+            </form>
+        </section>
+
+        <section class="messages-display">
+            <h2>Messages</h2>
+            <div id="displayedMessages">
+                <p>Loading messages...</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Remembering Hilah Lende Simmons</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('messageForm');
+            const displayedMessages = document.getElementById('displayedMessages');
+			const deploy_id= 'AKfycbz_sbMFUQljf-ld7f-LOTKZtanu9pyNHMQQT7iNggYHamYjUb4QZXPnRLJ1b_-LEmqs';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbz_sbMFUQljf-ld7f-LOTKZtanu9pyNHMQQT7iNggYHamYjUb4QZXPnRLJ1b_-LEmqs/exec'; 
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const nameInput = document.getElementById('name');
+                const messageInput = document.getElementById('message');
+
+                if (nameInput.value.trim() === '') {
+                    alert('Please enter your name.');
+                    nameInput.focus();
+                    return;
+                }
+
+                if (messageInput.value.trim() === '') {
+                    alert('Please enter your message.');
+                    messageInput.focus();
+                    return;
+                }
+
+                const name = nameInput.value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const message = messageInput.value;
+
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('phone', phone);
+                formData.append('message', message);
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Your message has been submitted. Thank you.');
+                    form.reset();
+                    // Optionally, you could try to refresh the displayed messages here
+                    // but for simplicity, we'll just alert the user.
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('There was an error submitting your message. Please try again later.');
+                });
+            });
+
+            // Function to fetch and display selected messages (explained below)
+            function fetchAndDisplayMessages() {
+                // This would involve fetching data from your Google Sheet
+                // and updating the displayedMessages div.
+                // For a purely static site with minimal dependencies,
+                // you might need to manually update this section with a few selected messages.
+
+                // Example of manually adding messages:
+                displayedMessages.innerHTML = `
+                    <div class="message">
+                        <p class="author">From [Name of Person 1]</p>
+                        <p>"[Selected Message 1]"</p>
+                    </div>
+                    <div class="message">
+                        <p class="author">From [Name of Person 2]</p>
+                        <p>"[Selected Message 2]"</p>
+                    </div>
+                    // Add more messages as needed
+                `;
+            }
+
+            fetchAndDisplayMessages(); // Load initial messages
+        });
+    </script>
+</body>
+</html>
