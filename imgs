@@ -1,0 +1,27 @@
+#!/usr/bin/env zsh
+
+# Define paths
+HTML_FILE="photos.html"  
+GALLERY_DIR="images/gallery"
+TEMP_FILE=$(mktemp)
+
+# Find all image files in gallery directory (case insensitive)
+IMAGE_FILES=($GALLERY_DIR/**/*.(jpg|jpeg|png|gif|webp)(N))
+
+# Build image tags
+IMG_TAGS=()
+for img in ${IMAGE_FILES[@]}; do
+    IMG_TAGS+="\n            <img src=\"$img\" alt=\"Memory of Hilah\">"
+done
+
+# Use awk to insert images into gallery section
+awk -v imgs="${(j::)IMG_TAGS}" '
+    /<section class="gallery">/ { 
+        print $0
+        print imgs
+        next
+    }
+    { print }
+' $HTML_FILE > $TEMP_FILE && mv $TEMP_FILE $HTML_FILE
+
+echo "✅ Inserted ${#IMAGE_FILES} images into gallery"
